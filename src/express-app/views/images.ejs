@@ -1,0 +1,510 @@
+<%- include('include/head'); %>
+
+<body>
+
+    <!-- <script src="/js/d3.min.js"></script> -->
+    <script src="/js/loader.js"></script>
+
+        <div class="form-group">
+            <a href="/back" class="btn btn-lg btn-primary btn-block btn-outlined">Return</a>
+        </div>
+
+    <div class="cointainer m-1">
+        <div class="row">
+            <div class="col-6">
+                <% for (var i=0; i < filesCount; i++) { %>
+                <div class="slider card">
+                    <img class="card-img-top img-thumbnail slider-img" src="/python/images/<%=i%>.png">
+                    <div class="card-body">
+                        <h4 class="card-text text-center">
+                            <% if (i == 0 && filesCount !== 1) { %>
+                            Original image
+                            <button id="btn-right" class="btn btn-primary btn-lg float-right"
+                                onclick="plusDivs(1)">&#10095;</button>
+                            <% } else if (i ==0 && filesCount == 1) { %>
+                            Original image 
+                            <% } else if (i == filesCount-1) { %>
+                            Final image
+                            <button id="btn-left" class="btn btn-primary btn-lg float-left"
+                                onclick="plusDivs(-1)">&#10094;</button>
+                            <% } else { %>
+                            Middle image no. <%= i %>
+                            <button id="btn-left" class="btn btn-primary btn-lg float-left"
+                                onclick="plusDivs(-1)">&#10094;</button>
+                            <button id="btn-right" class="btn btn-primary btn-lg float-right"
+                                onclick="plusDivs(1)">&#10095;</button>
+                            <% } %>
+                        </h4>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Original image</th>
+                                    <% if (filesCount !== 1) { %>
+                                        <th scope="col">Final image</th>
+                                    <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Color space</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        grayscale
+                                        <% } else { %>
+                                        RGB
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                        <td>
+                                            <% if(json1.Type == 'L') { %>
+                                            grayscale
+                                            <% } else { %>
+                                            RGB
+                                            <% } %>
+                                        </td>
+                                    <% } %>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Resolution</th>
+                                    <td><%= json0.x_res %> x <%= json0.y_res %> px</td>
+                                    <% if (filesCount !== 1) { %>
+                                        <td><%= json1.x_res %> x <%= json1.y_res %> px</td>
+                                    <% } %>                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">Maximum value</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        <%= json0.Max_value %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json0.R_Max_value %> <br />
+                                        <b>G: </b> <%= json0.G_Max_value %> <br />
+                                        <b>B: </b> <%= json0.B_Max_value %>
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                    <td>
+                                        <% if(json1.Type == 'L') { %>
+                                        <%= json1.Max_value %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json1.R_Max_value %> <br />
+                                        <b>G: </b> <%= json1.G_Max_value %> <br />
+                                        <b>B: </b> <%= json1.B_Max_value %>
+                                        <% } %>
+                                    </td>   
+                                    <% } %>                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">Minimum value</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        <%= json0.Min_value %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json0.R_Min_Value %> <br />
+                                        <b>G: </b> <%= json0.G_Min_Value %> <br />
+                                        <b>B: </b> <%= json0.B_Min_Value %>
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                    <td>
+                                        <% if(json1.Type == 'L') { %>
+                                        <%= json1.Min_value %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json1.R_Min_Value %> <br />
+                                        <b>G: </b> <%= json1.G_Min_Value %> <br />
+                                        <b>B: </b> <%= json1.B_Min_Value %>
+                                        <% } %>
+                                    </td>
+                                    <% } %>                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">Variance</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        <%= json0.Variance.toFixed(2) %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json0.R_Variance.toFixed(2) %> <br />
+                                        <b>G: </b> <%= json0.G_Variance.toFixed(2) %> <br />
+                                        <b>B: </b> <%= json0.B_Variance.toFixed(2) %>
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                    <td>
+                                        <% if(json1.Type == 'L') { %>
+                                        <%= json1.Variance.toFixed(2) %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json1.R_Variance.toFixed(2) %> <br />
+                                        <b>G: </b> <%= json1.G_Variance.toFixed(2) %> <br />
+                                        <b>B: </b> <%= json1.B_Variance.toFixed(2) %>
+                                        <% } %>
+                                    </td>
+                                    <% } %>                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">Standard deviation</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        <%= json0.Standard_devation.toFixed(2) %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json0.R_Standard_devation.toFixed(2) %> <br />
+                                        <b>G: </b> <%= json0.G_Standard_devation.toFixed(2) %> <br />
+                                        <b>B: </b> <%= json0.B_Standard_devation.toFixed(2) %>
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                    <td>
+                                        <% if(json1.Type == 'L') { %>
+                                        <%= json1.Standard_devation.toFixed(2) %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json1.R_Standard_devation.toFixed(2) %> <br />
+                                        <b>G: </b> <%= json1.G_Standard_devation.toFixed(2) %> <br />
+                                        <b>B: </b> <%= json1.B_Standard_devation.toFixed(2) %>
+                                        <% } %>
+                                    </td>
+                                    <% } %>                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">Median</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        <%= json0.Median %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json0.R_Median %> <br />
+                                        <b>G: </b> <%= json0.G_Median %> <br />
+                                        <b>B: </b> <%= json0.B_Median %>
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                    <td>
+                                        <% if(json1.Type == 'L') { %>
+                                        <%= json1.Median %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json1.R_Median %> <br />
+                                        <b>G: </b> <%= json1.G_Median %> <br />
+                                        <b>B: </b> <%= json1.B_Median %>
+                                        <% } %>
+                                    </td>  
+                                    <% } %>                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">Average</th>
+                                    <td>
+                                        <% if(json0.Type == 'L') { %>
+                                        <%= json0.Average.toFixed(2) %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json0.R_Average.toFixed(2) %> <br />
+                                        <b>G: </b> <%= json0.G_Average.toFixed(2) %> <br />
+                                        <b>B: </b> <%= json0.B_Average.toFixed(2) %>
+                                        <% } %>
+                                    </td>
+                                    <% if (filesCount !== 1) { %>
+                                    <td>
+                                        <% if(json1.Type == 'L') { %>
+                                        <%= json1.Average.toFixed(2) %>
+                                        <% } else { %>
+                                        <b>R: </b> <%= json1.R_Average.toFixed(2) %> <br />
+                                        <b>G: </b> <%= json1.G_Average.toFixed(2) %> <br />
+                                        <b>B: </b> <%= json1.B_Average.toFixed(2) %>
+                                        <% } %>
+                                    </td>   
+                                    <% } %>                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart-original-l"></div>
+                    <div id="chart-original-r"></div>
+                    <div id="chart-original-g"></div>
+                    <div id="chart-original-b"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart-final-l"></div>
+                    <div id="chart-final-r"></div>
+                    <div id="chart-final-g"></div>
+                    <div id="chart-final-b"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
+
+        function showDivs(n) {
+            var i;
+            var x = document.getElementsByClassName("slider");
+
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+
+            x[slideIndex - 1].style.display = "block";
+        }
+    </script>
+
+<script>
+    var json0 = <%- JSON.stringify(json0) %>;
+    var json1 = <%- JSON.stringify(json1) %>;
+    var imagesCount = <%- filesCount %>;
+    
+    if (json0.histogram) {
+        var _dataOriginalL = [];
+        for (var i = 0; i < json0.histogram.length; i++) {
+            _dataOriginalL.push({"value": i, "quantity": json0.histogram[i]});
+        }
+    }
+    
+    if (json0.R_histogram) {
+        var _dataOriginalR = [];
+        for (var i = 0; i < json0.R_histogram.length; i++) {
+            _dataOriginalR.push({"value": i, "quantity": json0.R_histogram[i]});
+        }
+    }
+    
+    if (json0.G_histogram) {
+        var _dataOriginalG = [];
+        for (var i = 0; i < json0.G_histogram.length; i++) {
+            _dataOriginalG.push({"value": i, "quantity": json0.G_histogram[i]});
+        }
+    }
+    
+    if (json0.B_histogram) {
+        var _dataOriginalB = [];
+        for (var i = 0; i < json0.B_histogram.length; i++) {
+            _dataOriginalB.push({"value": i, "quantity": json0.B_histogram[i]});
+        }
+    }
+
+    if (imagesCount !== 1) {
+
+        if (json1.histogram) {
+            var _dataFinalL = [];
+            for (var i = 0; i < json1.histogram.length; i++) {
+                _dataFinalL.push({"value": i, "quantity": json1.histogram[i]});
+            }
+        }
+        
+        if (json1.R_histogram) {
+            var _dataFinalR = [];
+            for (var i = 0; i < json1.R_histogram.length; i++) {
+                _dataFinalR.push({"value": i, "quantity": json1.R_histogram[i]});
+            }
+        }
+        
+        if (json1.G_histogram) {
+            var _dataFinalG = [];
+            for (var i = 0; i < json1.G_histogram.length; i++) {
+                _dataFinalG.push({"value": i, "quantity": json1.G_histogram[i]});
+            }
+        }
+        
+        if (json1.B_histogram) {
+            var _dataFinalB = [];
+            for (var i = 0; i < json1.B_histogram.length; i++) {
+                _dataFinalB.push({"value": i, "quantity": json1.B_histogram[i]});
+            }
+        }
+    }
+
+    // GOOGLE CHART
+    google.charts.load('current', {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        if (_dataOriginalL) {
+            var dataOriginalL = new google.visualization.DataTable();
+            dataOriginalL.addColumn('number', 'Pixel value');
+            dataOriginalL.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataOriginalL.length; i++) {
+                value = _dataOriginalL[i].value;
+                quantity = _dataOriginalL[i].quantity;
+                dataOriginalL.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataOriginalR) {
+            var dataOriginalR = new google.visualization.DataTable();
+            dataOriginalR.addColumn('number', 'Pixel value');
+            dataOriginalR.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataOriginalR.length; i++) {
+                value = _dataOriginalR[i].value;
+                quantity = _dataOriginalR[i].quantity;
+                dataOriginalR.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataOriginalG) {
+            var dataOriginalG = new google.visualization.DataTable();
+            dataOriginalG.addColumn('number', 'Pixel value');
+            dataOriginalG.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataOriginalG.length; i++) {
+                value = _dataOriginalG[i].value;
+                quantity = _dataOriginalG[i].quantity;
+                dataOriginalG.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataOriginalB) {
+            var dataOriginalB = new google.visualization.DataTable();
+            dataOriginalB.addColumn('number', 'Pixel value');
+            dataOriginalB.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataOriginalB.length; i++) {
+                value = _dataOriginalB[i].value;
+                quantity = _dataOriginalB[i].quantity;
+                dataOriginalB.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataFinalL) {
+            var dataFinalL = new google.visualization.DataTable();
+            dataFinalL.addColumn('number', 'Pixel value');
+            dataFinalL.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataFinalL.length; i++) {
+                value = _dataFinalL[i].value;
+                quantity = _dataFinalL[i].quantity;
+                dataFinalL.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataFinalR) {
+            var dataFinalR = new google.visualization.DataTable();
+            dataFinalR.addColumn('number', 'Pixel value');
+            dataFinalR.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataFinalR.length; i++) {
+                value = _dataFinalR[i].value;
+                quantity = _dataFinalR[i].quantity;
+                dataFinalR.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataFinalG) {
+            var dataFinalG = new google.visualization.DataTable();
+            dataFinalG.addColumn('number', 'Pixel value');
+            dataFinalG.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataFinalG.length; i++) {
+                value = _dataFinalG[i].value;
+                quantity = _dataFinalG[i].quantity;
+                dataFinalG.addRow([value, quantity]);
+            }
+        }
+
+        if (_dataFinalB) {
+            var dataFinalB = new google.visualization.DataTable();
+            dataFinalB.addColumn('number', 'Pixel value');
+            dataFinalB.addColumn('number', 'Pixel count');
+
+            for (var i = 0; i < _dataFinalB.length; i++) {
+                value = _dataFinalB[i].value;
+                quantity = _dataFinalB[i].quantity;
+                dataFinalB.addRow([value, quantity]);
+            }
+        }
+
+        var options = {
+            legend: { position: 'none' },
+            hAxis: {
+                ticks: [-30, 0, 128, 255, 285],
+                title: "Pixel value",
+                gridlines: {
+                    color: 'transparent'
+                },
+                baselineColor: 'transparent'
+            },
+            vAxis: {
+                title: "Pixel count",
+                gridlines: {
+                    color: 'transparent'
+                },
+                // baselineColor: 'transparent'
+            },
+            bar: {
+                gap: 0
+            }
+        };
+
+        if (dataOriginalL) {
+            options.title = 'Original image, channel L';
+            options.colors = ['gray'];
+            new google.visualization.ColumnChart(document.getElementById("chart-original-l")).draw(dataOriginalL, options);
+        }
+
+        if (dataOriginalR) {
+            options.title = 'Original image, channel R';
+            options.colors = ['red'];
+            new google.visualization.ColumnChart(document.getElementById("chart-original-r")).draw(dataOriginalR, options);
+        }
+
+        if (dataOriginalG) {
+            options.title = 'Original image, channel G';
+            options.colors = ['green'];
+            new google.visualization.ColumnChart(document.getElementById("chart-original-g")).draw(dataOriginalG, options);
+        }
+
+        if (dataOriginalB) {
+            options.title = 'Original image, channel B';
+            options.colors = ['blue'];
+            new google.visualization.ColumnChart(document.getElementById("chart-original-b")).draw(dataOriginalB, options);
+        }
+
+        if (dataFinalL) {
+            options.title = 'Final image, channel L';
+            options.colors = ['gray'];
+            new google.visualization.ColumnChart(document.getElementById("chart-final-l")).draw(dataFinalL, options);
+        }
+
+        if (dataFinalR) {
+            options.title = 'Final image, channel R';
+            options.colors = ['red'];
+            new google.visualization.ColumnChart(document.getElementById("chart-final-r")).draw(dataFinalR, options);
+        }
+
+        if (dataFinalG) {
+            options.title = 'Final image, channel G';
+            options.colors = ['green'];
+            new google.visualization.ColumnChart(document.getElementById("chart-final-g")).draw(dataFinalG, options);
+        }
+
+        if (dataFinalB) {
+            options.title = 'Final image, channel B';
+            options.colors = ['blue'];
+            new google.visualization.ColumnChart(document.getElementById("chart-final-b")).draw(dataFinalB, options);
+        }
+    }
+</script>
+
+    <%- include('include/foot'); %>

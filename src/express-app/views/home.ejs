@@ -1,0 +1,437 @@
+<%- include('include/head'); %>
+    <body>
+        <form action="/imagePath" method="post" enctype="multipart/form-data" id="fileForm">
+            <div class="form-group">
+                <label for="file" class="btn btn-lg btn-primary btn-block btn-outlined">Select image file</label>
+                <input class="form-control" type="file" id="file" name="file" accept="image/png, image/jpeg" style="display: none" onchange="PreviewImage();">
+            </div>
+        </form>
+
+        <div class="cointainer mx-1">
+            <div class="row">
+                <div class="col-6">
+                    <div id="left-col" class="card" style="display: none;">
+                        <img id="hero" class="card-img-top img-thumbnail" src="">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <b>Name:</b> <span></span>
+                                <br />
+                                <b>Size:</b> <span></span> bajtów
+                                <br />
+                                <b>Type:</b> <span></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div id="right-col" class="card" style="display: none;">
+                        <form action="/python" method="post" class="card-body">
+
+                            <div class="form-group form-inline">
+                                <label for="operation" class="btn btn-primary noHover">Operation:</label>
+                                <select name="operation" id="operation" class="ml-2 form-control" onchange="SetForm();" required>
+                                    <option value="getImageParameters">Image parameters</option>
+                                    <option value="toGrayscale">Grayscale</option>
+                                    <option value="getBinaryzedImage">Image binarization</option>
+                                    <option value="getOtsuBinaryzedImage">Otsu method</option>
+                                    <option value="getDilate">Dilation</option>
+                                    <option value="getErode">Erosion</option>
+                                    <option value="getOpenly">Opening</option>
+                                    <option value="getClosely">Closing</option>
+                                    <option value="filteringImage">Filtration</option>
+                                    <option value="medianFiltergingImage">Median filtering</option>
+                                    <option value="gammaCorrection">Gamma correction</option>
+                                    <option value="addGaussianNoise">Gaussian noise</option>
+                                    <option value="addSaltPepperNoise">Salt-pepper noise</option>
+                                </select>
+                            </div>
+
+                            <hr>
+
+                            <!-- toGrayscale -->
+                            <div id="toGrayscale" class="setForm form-group">
+                                <label for="toGrayscale[gray]">Grayscale type</label>
+                                <select name="toGrayscale[gray]" id="toGrayscale[gray]" class="form-control">
+                                    <option value="human">(0,215 * R + 0,7151 * G + 0,0721 * B)</option>
+                                    <option value="machine">(R + G + B) / 3</option>
+                                </select>
+                            </div>
+
+                            <!-- getBinaryzedImage -->
+                            <div id="getBinaryzedImage" class="setForm form-group">
+                                <label for="getBinaryzedImage[threshold]">Threshold</label>
+                                <input type="number" name="getBinaryzedImage[threshold]" id="getBinaryzedImage[threshold]" class="form-control" min="0" max="255" value="128" required>
+                                <br />
+                                <label for="getBinaryzedImage[numberOfInters]">Middle images number</label>
+                                <input type="number" name="getBinaryzedImage[numberOfInters]" id="getBinaryzedImage[numberOfInters]" class="form-control" min="2" value="2" required>
+                            </div>
+
+                            <!-- getOtsuBinaryzedImage -->
+                            <div id="getOtsuBinaryzedImage" class="setForm form-group">
+                                <label for="getOtsuBinaryzedImage[numberOfInters]">Middle images number</label>
+                                <input type="number" name="getOtsuBinaryzedImage[numberOfInters]" id="getOtsuBinaryzedImage[numberOfInters]" class="form-control" min="2" value="2" required>
+                            </div>
+
+                            <!-- getDilate  -->
+                            <div id="getDilate" class="setForm form-group">
+                                <label for="getDilate[structElem]">Struct element</label>
+                                <select name="getDilate[structElem]" id="getDilate[structElem]" class="form-control">
+                                    <option value="cross">cross</option>
+                                    <option value="rect">rectangle</option>
+                                </select>
+                                <br />
+                                <label for="getDilate[size]">Struct element size</label>
+                                <input type="number" name="getDilate[size]" id="getDilate[size]" class="form-control" min="3" value="3" step="2" max="15" required>
+                                <br />
+                                <label for="getDilate[numberOfInters]">Middle images number</label>
+                                <input type="number" name="getDilate[numberOfInters]" id="getDilate[numberOfInters]" class="form-control" min="2" value="2" required>
+                            </div>
+
+                            <!--  getErode -->
+                            <div id="getErode" class="setForm form-group">
+                                <label for="getErode[structElem]">Struct element</label>
+                                <select name="getErode[structElem]" id="getErode[structElem]" class="form-control">
+                                    <option value="cross">cross</option>
+                                    <option value="rect">rectangle</option>
+                                </select>
+                                <br />
+                                <label for="getErode[size]">Struct element size</label>
+                                <input type="number" name="getErode[size]" id="getErode[size]" class="form-control" min="3" value="3" step="2" max="15" required>
+                                <br />
+                                <label for="getErode[numberOfInters]">Middle images number</label>
+                                <input type="number" name="getErode[numberOfInters]" id="getErode[numberOfInters]" class="form-control" min="2" value="2" required>
+                            </div>
+
+                            <!-- getOpenly -->
+                            <div id="getOpenly" class="setForm form-group">
+                                <label for="getOpenly[structElem]">Struct element</label>
+                                <select name="getOpenly[structElem]" id="getOpenly[structElem]" class="form-control">
+                                    <option value="cross">cross</option>
+                                    <option value="rect">rectangle</option>
+                                </select>
+                                <br />
+                                <label for="getOpenly[size]">Struct element size</label>
+                                <input type="number" name="getOpenly[size]" id="getOpenly[size]" class="form-control" min="3" value="3" step="2" max="15" required>
+                                <br />
+                                <label for="getOpenly[numberOfInters]">Middle images number</label>
+                                <input type="number" name="getOpenly[numberOfInters]" id="getOpenly[numberOfInters]" class="form-control" min="3" value="3" required>
+                            </div>
+
+                            <!-- getClosely -->
+                            <div id="getClosely" class="setForm form-group">
+                                <label for="getClosely[structElem]">Struct element</label>
+                                <select name="getClosely[structElem]" id="getClosely[structElem]" class="form-control">
+                                    <option value="cross">cross</option>
+                                    <option value="rect">rectangle</option>
+                                </select>
+                                <br />
+                                <label for="getClosely[size]">Struct element size</label>
+                                <input type="number" name="getClosely[size]" id="getClosely[size]" class="form-control" min="3" value="3" step="2" max="15" required>
+                                <br />
+                                <label for="getClosely[numberOfInters]">Middle images number</label>
+                                <input type="number" name="getClosely[numberOfInters]" id="getClosely[numberOfInters]" class="form-control" min="3" value="3" required>
+                            </div>
+
+                            <!-- filteringImage -->
+                            <div id="filteringImage" class="setForm form-group">
+                                <label for="filteringImage[numberOfInters]">Middle images number</label>
+                                <input type="number" name="filteringImage[numberOfInters]" id="filteringImage[numberOfInters]" class="form-control" min="1" value="1" required>
+                                <br />
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="filteringImage[npMask]" id="LP1" value="LP1" checked>LP1
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="LP2" value="LP2">LP2
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="LP3" value="LP3">LP3
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="LP4" value="LP4">LP4
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="HP1" value="HP1">HP1
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="HP2" value="HP2">HP2
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="HP3" value="HP3">HP3
+                                    <input class="form-check-input ml-4" type="radio" name="filteringImage[npMask]" id="HP4" value="HP4">HP4
+                                </div>
+                                <hr>
+                                <h5>Low-pass filters</h5>
+                                <div class="row mb-3">    
+                                    <div class="col-md-3">
+                                        <h6 class="filter">LP1</h6>        
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">  
+                                        <h6 class="filter">LP2</h6>        
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">2</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">    
+                                        <h6 class="filter">LP3</h6>       
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">4</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">    
+                                        <h6 class="filter">LP4</h6>       
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">12</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5>High-pass filters</h5>
+                                <div class="row">         
+                                    <div class="col-md-3">   
+                                        <h6 class="filter">HP1</h6>        
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">9</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">  
+                                        <h6 class="filter">HP2</h6>         
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">5</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">    
+                                        <h6 class="filter">HP3</h6>      
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">-2</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">-2</button>
+                                            <button type="button" class="btn btn-default col-md-4">5</button>
+                                            <button type="button" class="btn btn-default col-md-4">-2</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                            <button type="button" class="btn btn-default col-md-4">-2</button>
+                                            <button type="button" class="btn btn-default col-md-4">1</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">       
+                                        <h6 class="filter">HP4</h6>    
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">20</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                            <button type="button" class="btn btn-default col-md-4">-1</button>
+                                            <button type="button" class="btn btn-default col-md-4">0</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- medianFiltergingImage -->
+                            <div id="medianFiltergingImage" class="setForm form-group">
+                                <label for="medianFiltergingImage[structElem]">Struct element</label>
+                                <select name="medianFiltergingImage[structElem]" id="medianFiltergingImage[structElem]" class="form-control">
+                                    <option value="cross">cross</option>
+                                    <option value="rect">rectangle</option>
+                                </select>
+                                <br />
+                                <label for="medianFiltergingImage[size]">Struct element size</label>
+                                <input type="number" name="medianFiltergingImage[size]" id="medianFiltergingImage[size]" class="form-control" min="3" value="3" step="2" max="15" required>
+                                <br />
+                                <label for="medianFiltergingImage[numberOfInters]">Middle images number</label>
+                                <input type="number" name="medianFiltergingImage[numberOfInters]" id="medianFiltergingImage[numberOfInters]" class="form-control" min="1" value="1" required>
+                            </div>
+
+                            <!-- gammaCorrection -->
+                            <div id="gammaCorrection" class="setForm form-group">
+                                <label for="gammaCorrection[gamma]">Gamma parameter</label>
+                                <input type="number" name="gammaCorrection[gamma]" id="gammaCorrection[gamma]" class="form-control" min="1" value="1" required>
+                                <br />
+                                <label for="gammaCorrection[numberOfInters]">Middle images number</label>
+                                <input type="number" name="gammaCorrection[numberOfInters]" id="gammaCorrection[numberOfInters]" class="form-control" min="1" value="1" required>
+                            </div>
+
+                            <!-- addGaussianNoise -->
+                            <div id="addGaussianNoise" class="setForm form-group">
+                                <label for="addGaussianNoise[stdDev]">Standard deviation</label>
+                                <input type="number" name="addGaussianNoise[stdDev]" id="addGaussianNoise[stdDev]" class="form-control" min="0.05" step="0.01" value="0.05" required>
+                                <br />
+                                <label for="addGaussianNoise[mean]">Average gray value</label>
+                                <input type="number" name="addGaussianNoise[mean]" id="addGaussianNoise[mean]" class="form-control" min="0" value="0" required>
+                                <br />
+                                <label for="addGaussianNoise[numberOfInters]">Middle images number</label>
+                                <input type="number" name="addGaussianNoise[numberOfInters]" id="addGaussianNoise[numberOfInters]" class="form-control" min="1" value="1" required>
+                            </div>
+
+                            <!-- addSaltPepperNoise -->
+                            <div id="addSaltPepperNoise" class="setForm form-group">
+                                <label for="addSaltPepperNoise[propability]">Pixel noise probability</label>
+                                <input type="number" name="addSaltPepperNoise[propability]" id="addSaltPepperNoise[propability]" class="form-control" min="0.05" step="0.01" value="0.05" required>
+                                <br />
+                                <label for="addSaltPepperNoise[saltPepperRatio]">Salt-pepper ratio</label>
+                                <input type="number" name="addSaltPepperNoise[saltPepperRatio]" id="addSaltPepperNoise[saltPepperRatio]" class="form-control" min="0" max="1" step="0.1" value="0.5" required>
+                                <br />
+                                <label for="addSaltPepperNoise[numberOfInters]">Middle images number</label>
+                                <input type="number" name="addSaltPepperNoise[numberOfInters]" id="addSaltPepperNoise[numberOfInters]" class="form-control" min="1" value="1" required>
+                            </div>
+
+                            <hr>
+
+                            <button type="submit" class="btn btn-danger mx-auto d-block" onclick="ShowModal();">Execute operation</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL HERE -->
+        <button type="button" id="myButton" class="btn btn-primary" data-toggle="modal" data-target="#loadingModal" data-keyboard="false" data-backdrop="static" style="display: none;">Modal trigger button</button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary" role="status" style="width: 15rem; height: 15rem">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <br/>
+                        <h1 class="display-4 text-primary">Executing operation</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            function PreviewImage() {
+                // Show uploaded image instantly
+                var file = document.getElementById("file");
+
+                var oFReader = new FileReader();
+                oFReader.readAsDataURL(file.files[0]);
+        
+                oFReader.onload = function (oFREvent) {
+                    document.getElementById("hero").src = oFREvent.target.result;
+                };
+
+                var spans = document.getElementsByTagName("span");
+                spans[0].innerHTML = file.files.item(0).name;
+                spans[1].innerHTML = file.files.item(0).size;
+                spans[2].innerHTML = file.files.item(0).type;
+
+                document.getElementById("left-col").style.display = "block";
+                document.getElementById("right-col").style.display = "block";
+
+                // Send AJAX POST request with image path information
+                var fd = new FormData();
+                fd.append('file', $('#file')[0].files[0]);
+
+                $.ajax({
+                    url: '/imagePath',
+                    data: fd,
+                    processData: false,
+                    contenttype: false,
+                    type: 'POST'
+                });                
+            };
+
+            // Set visible form based on chosen operation
+            function SetForm() {
+                var selection = document.getElementById("operation");
+                var forms = document.getElementsByClassName("setForm");
+
+                for (var i=0; i<forms.length; i++) {
+                    forms[i].style.display = "none";
+                }
+
+                var visibleDiv = document.getElementById(selection.value);
+                visibleDiv.style.display = "block";
+            }
+
+            // Open modal
+            function ShowModal() {
+				var form = document.getElementById('modalForm');
+				var checkVal = form.checkValidity();
+				if (checkVal == true)
+					$('#myButton').trigger('click');
+            }
+
+        </script>
+<%- include('include/foot'); %>

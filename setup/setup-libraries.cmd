@@ -1,0 +1,16 @@
+pip install cycler==0.10.0
+pip install decorator==4.4.2
+pip install imageio==2.8.0
+pip install kiwisolver==1.2.0
+pip install matplotlib==3.2.1
+pip install networkx==2.4
+pip install numexpr==2.7.1
+pip install numpy==1.18.2
+pip install Pillow==7.1.1
+pip install pyparsing==2.4.7
+pip install python-dateutil==2.8.1
+pip install PyWavelets==1.1.1
+pip install scikit-image==0.16.2
+pip install scipy==1.4.1
+pip install six==1.14.0
+pip install tables==3.6.1

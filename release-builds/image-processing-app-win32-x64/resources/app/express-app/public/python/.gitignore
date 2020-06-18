@@ -1,0 +1,14 @@
+#ignore images
+*.png
+*.bmp
+*.jpg
+
+#ignore json
+*.json
+
+#env
+
+ImageApp/
+.vscode/
+__pycache__/
+public/

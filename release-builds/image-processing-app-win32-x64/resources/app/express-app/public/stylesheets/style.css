@@ -1,0 +1,91 @@
+body#index {
+  height: 100vh;
+  background-color: #000;
+  background-image: url("../images/hero.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+#header {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding-top: 30vh;
+  color: #fff;
+  font-family: 'Lato';
+  animation: fadeIn 1.5s;
+  text-shadow: 3px 3px 8px #000;
+}
+
+#header a {
+  margin-top: 15px;
+  animation: fadeIn 1.5s;
+}
+
+.setForm {
+  display: none;
+}
+
+.noHover {
+  pointer-events: none;
+}
+
+.btn-group {
+  background-color: lightsteelblue;
+  pointer-events: none;
+  width: 130px;
+}
+
+.filter {
+  margin-left: 50px;
+  margin-top: 10px;
+}
+
+.display-4 {
+  font-size: 42px !important;
+  text-align: center;
+}
+
+#btn-left, #btn-right {
+  margin-top: -1.5%;
+}
+
+.slider-img {
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+line.bin {
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/Lato/Lato-Light.ttf');
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
