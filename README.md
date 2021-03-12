@@ -47,6 +47,8 @@ npm start
 **WARNING:** To smoothly change between the Electron window and browser startup, you need to refactor paths in Python scripts (*api.py, basic_operations.py*).
 
 ## Python scripts details
+For more information, please refer to [Marcin Nawrocki repostiory](https://github.com/MarcinNawrocki/NumPy-Image-App)
+
 Python scripts are in *src/express-app/public/python* directory.
 - *api.py* - script that allows efficient communication between Node and Python.
 - *basic_operations* - script to handle basic operations, such as image loading/saving.
