@@ -74,12 +74,10 @@ After returning to the home screen, final image is saved inside *src/express-app
 ## Credits
 The project has been developed by:
 
-- Marcin Nawrocki (Python scripts)
-- Tomasz Jankowski (window application and Node-Python integration)
-- [Mateusz Kunysz](https://github.com/key999) (Python consulting)
+- [Marcin Nawrocki](https://github.com/MarcinNawrocki) - Python scripts
+- Tomasz Jankowski - window application and Node-Python integration
 
-
-- [frankhale](https://github.com/frankhale) ([Integration between Electron and Express](https://github.com/frankhale/electron-with-express))
+Thanks to [frankhale](https://github.com/frankhale) for ([integrating Electron with Express](https://github.com/frankhale/electron-with-express))
 
 ## License
  
