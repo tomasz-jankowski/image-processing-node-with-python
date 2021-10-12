@@ -13,7 +13,7 @@
     "start": ".\\node_modules\\node\\bin\\node.exe start-electron.js"
   },
   "dependencies": {
-    "electron": "8.2.0",
+    "electron": "11.5.0",
     "jquery": "^3.4.1",
     "keymaster": "^1.6.2",
     "lodash": "^4.17.15",
